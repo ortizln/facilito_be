@@ -1,13 +1,13 @@
-package com.api.facilitocobros;
+package com.facilito.api;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class FacilitoCobrosApplication {
+public class ApiApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(FacilitoCobrosApplication.class, args);
+		SpringApplication.run(ApiApplication.class, args);
 	}
 
 }
