@@ -3,7 +3,6 @@ package com.facilito.api.models;
 import java.util.Date;
 
 
-import org.springframework.data.annotation.Id;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 

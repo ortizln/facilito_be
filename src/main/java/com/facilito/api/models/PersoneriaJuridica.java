@@ -1,6 +1,5 @@
 package com.facilito.api.models;
 
-import org.springframework.data.annotation.Id;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

@@ -18,7 +18,7 @@ public class ClientesApi {
 	@Autowired
 	private ClientesR clientesR; 
 	@GetMapping
-	@ResponseStatus(code = HttpStatus.OK)
+	@ResponseStatus(HttpStatus.OK)
 	public List<Clientes> getAll(){
 		return clientesR.findAll();
 	}

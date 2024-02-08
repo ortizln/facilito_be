@@ -30,8 +30,8 @@ public class Clientes {
 	@DateTimeFormat(iso = ISO.DATE)
 	@Column(name ="fechanacimiento")
 	private Date fechanacimiento;
-	private Long descapacitado;
-	private Long porcdescapacidad;
+	private Long discapacitado;
+	private Long porcdiscapacidad;
 	private Long porcexonera;
 	private Long estado;
 	private String email;

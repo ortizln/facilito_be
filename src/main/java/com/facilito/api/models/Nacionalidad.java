@@ -1,8 +1,6 @@
 package com.facilito.api.models;
 
-import java.io.Serializable;
 
-import org.springframework.data.annotation.Id;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,14 +9,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
+@Table(name = "nacionalidad")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "nacionalidad")
-public class Nacionalidad implements Serializable{
+public class Nacionalidad{
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idnacionalidad;
 	private String descipcion;
 }
