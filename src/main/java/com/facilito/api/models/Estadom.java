@@ -27,7 +27,7 @@ public class Estadom {
 
 	public Estadom() {
 		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public Estadom(Long idestadom, String descripcion, Long usucrea, Date feccrea, Long usumodi, Date fecmodi) {

@@ -27,7 +27,7 @@ public class Tipopago {
 
 	public Tipopago() {
 		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public Tipopago(Long idtipopago, String descripcion, Long usucrea, Date feccrea, Long usumodi, Date fecmodi) {

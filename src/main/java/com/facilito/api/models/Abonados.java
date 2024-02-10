@@ -60,7 +60,7 @@ public class Abonados {
 
 	public Abonados() {
 		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public Abonados(Long idabonado, String nromedidor, Long lecturainicial, Long estado, Date fechainstalacion,

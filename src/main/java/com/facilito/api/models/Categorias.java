@@ -30,7 +30,7 @@ public class Categorias {
 	private Long fijosanea;
 	public Categorias() {
 		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 	public Categorias(Long idcategoria, String descripcion, Long usucrea, Date feccrea, Long usumodi, Date fecmodi,
 			Boolean habilitado, String codigo, Long fijoagua, Long fijosanea) {

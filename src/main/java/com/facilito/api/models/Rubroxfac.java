@@ -22,7 +22,7 @@ public class Rubroxfac {
 
 	public Rubroxfac() {
 		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public Rubroxfac(Long idrubroxfac, BigDecimal cantidad, BigDecimal valorunitario, Long estado,

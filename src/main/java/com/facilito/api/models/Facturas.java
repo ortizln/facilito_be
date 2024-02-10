@@ -68,9 +68,11 @@ public class Facturas {
 	private Date fecmodi;
 	private BigDecimal valorbase;
 	private Long idabonado;
+	//@OneToMany(mappedBy = "factura", cascade = CascadeType.ALL)
+    //private List<Rubros> rubros;
 	public Facturas() {
 		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 	public Facturas(Long idfactura, Modulos idmodulo, Clientes idcliente, String nrofactura, Long porcexoneracion,
 			String razonexonera, BigDecimal totaltarifa, Long pagado, Long usuariocobro, Date fechacobro, Long estado,
@@ -297,5 +299,9 @@ public class Facturas {
 	public void setIdabonado(Long idabonado) {
 		this.idabonado = idabonado;
 	}
+    public void setRubros(Rubros rubros2) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setRubros'");
+    }
 
 }

@@ -27,7 +27,7 @@ public class Ubicacionm {
 
 	public Ubicacionm() {
 		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public Ubicacionm(Long idubicacionm, String descripcion, Long usucrea, Date feccrea, Long usumodi, Date fecmodi) {
