@@ -2,9 +2,13 @@ package com.facilito.api.models;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
 
@@ -36,6 +40,19 @@ public class Rubros {
 	private Boolean swiva;
 	private Boolean calculable;
 	private Boolean estado;
+	@JsonIgnore
+	@ManyToMany(mappedBy="rubros")
+	public Set<Facturas> facturas = new HashSet<>();
+
+
+
+	public Set<Facturas> getFacturas() {
+		return facturas;
+	}
+
+	public void setFacturas(Set<Facturas> facturas) {
+		this.facturas = facturas;
+	}
 
 	public Rubros() {
 		super();

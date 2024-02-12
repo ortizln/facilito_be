@@ -1,7 +1,7 @@
 package com.facilito.api.apis;
 
+
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.facilito.api.models.Facturas;
+import com.facilito.api.models.Rubros;
 import com.facilito.api.models.Rubroxfac;
 import com.facilito.api.repositories.FacturasR;
 import com.facilito.api.repositories.RubroxfacR;
@@ -32,17 +33,28 @@ public class FacturasApi {
         if (facturas.isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {
-            BigDecimal valor;
+           
             for (Facturas factura : facturas) {
+            	//BigDecimal valorPago; 
                 System.out.println("--------------------------");
                 System.out.println(factura.getIdfactura());
-                List<Rubroxfac> rubroxfac = rubroxfacR.findByIdFactura(factura.getIdfactura());
-                for (Rubroxfac ruxfa : rubroxfac) {
-                    // factura.setRubros(ruxfa.getIdrubro_rubros());
-                    BigDecimal valorunitario = ruxfa.getValorunitario(); 
-                    System.out.println(ruxfa.getValorunitario());
-                    //valor += valorunitario;
+                Double totalTarifa = factura.getTotaltarifa().doubleValue();
+                for(Rubros rubro : factura.getRubros()) {
+                	Double rubroValor= rubro.getValor().doubleValue();
+                	totalTarifa +=rubroValor;               	
+                	System.out.println(totalTarifa);
+                	factura.setTotaltarifa(new BigDecimal(totalTarifa).setScale(2,BigDecimal.ROUND_HALF_UP));
                 }
+         /*       List<Rubroxfac> rubroxfac = rubroxfacR.findByIdFactura(factura.getIdfactura());
+                for (Rubroxfac ruxfa : rubroxfac) {
+                    //factura.setRubros(ruxfa.getIdrubro_rubros());
+                   // BigDecimal valorunitario = ruxfa.getValorunitario(); 
+                    System.out.println(ruxfa.getValorunitario());
+                    
+                    valorPago = ruxfa.getValorunitario();
+                    //valor += valorunitario;
+                    System.out.println(valorPago);
+                }*/
                 
             }
             return ResponseEntity.ok(facturas);
