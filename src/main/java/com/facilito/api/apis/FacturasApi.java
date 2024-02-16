@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.facilito.api.excepciones.ResourceNotFound;
 import com.facilito.api.interfaces.FacturaI;
-import com.facilito.api.models.Abonados;
-import com.facilito.api.models.Clientes;
 import com.facilito.api.models.Facturas;
 import com.facilito.api.models.Modulos;
 import com.facilito.api.repositories.AbonadosR;
@@ -44,17 +42,17 @@ public class FacturasApi {
 			this.findFacturas(cuenta);
 		} else if (opt == 2) {
 			//List<Clientes> cliente = clientesR.findByCedula(String.valueOf(cuenta));
-			List<Abonados> abonado = abonadosR.findByCedula(String.valueOf(cuenta));
-			for (Abonados cient : abonado) {
+			//List<Abonados> abonado = abonadosR.findByCedula(String.valueOf(cuenta));
+			/*for (Abonados cient : abonado) {
 				if (abonado.isEmpty()) {
 					System.out.println("Clientes is empty");
 				} else {
 					System.out.println(cient.getIdabonado());
 					//facturas = facturasR.findByIdCliente(cient.getIdcliente());
 				}
-			}
+			}*/
 		} else {
-
+			this.errorMessage();
 		}
 	}
 	@GetMapping("/sincobro/cuenta")
@@ -75,6 +73,10 @@ public class FacturasApi {
 			});
 		}
 		return ResponseEntity.ok(facturas);
+	}
+	
+	public ResponseEntity<Facturas> errorMessage(){
+		return ResponseEntity.notFound().build(); 
 	}
 
 	@PutMapping("/{idfactura}")
