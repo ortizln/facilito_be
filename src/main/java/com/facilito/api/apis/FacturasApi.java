@@ -13,8 +13,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.facilito.api.excepciones.ResourceNotFound;
+<<<<<<< HEAD
 import com.facilito.api.models.Abonados;
 import com.facilito.api.models.Clientes;
+=======
+import com.facilito.api.interfaces.FacturaI;
+>>>>>>> d64ff5654af3ad145e8ee97f50a5d1cae3829b6b
 import com.facilito.api.models.Facturas;
 import com.facilito.api.models.Modulos;
 import com.facilito.api.repositories.AbonadosR;
@@ -36,6 +40,7 @@ public class FacturasApi {
 	private AbonadosR abonadosR;
 
 	@GetMapping("/sincobro")
+<<<<<<< HEAD
 	public ResponseEntity<List<Facturas>> getSinCobro(@RequestParam("opt") Long opt,
 			@RequestParam("dato") Long dato) {
 
@@ -59,6 +64,26 @@ public class FacturasApi {
 
 		} else {
 			return ResponseEntity.noContent().build();
+=======
+	public void getByIdAbonado(@RequestParam("opt") Long opt, @RequestParam("cuenta") Long cuenta) {
+		List<Facturas> facturas;
+		List<FacturaI> facturaI;
+		if (opt == 1) {
+			this.findFacturas(cuenta);
+		} else if (opt == 2) {
+			//List<Clientes> cliente = clientesR.findByCedula(String.valueOf(cuenta));
+			//List<Abonados> abonado = abonadosR.findByCedula(String.valueOf(cuenta));
+			/*for (Abonados cient : abonado) {
+				if (abonado.isEmpty()) {
+					System.out.println("Clientes is empty");
+				} else {
+					System.out.println(cient.getIdabonado());
+					//facturas = facturasR.findByIdCliente(cient.getIdcliente());
+				}
+			}*/
+		} else {
+			this.errorMessage();
+>>>>>>> d64ff5654af3ad145e8ee97f50a5d1cae3829b6b
 		}
 	}
 
@@ -80,6 +105,10 @@ public class FacturasApi {
 			});
 		}
 		return ResponseEntity.ok(facturas);
+	}
+	
+	public ResponseEntity<Facturas> errorMessage(){
+		return ResponseEntity.notFound().build(); 
 	}
 
 	@PutMapping("/{idfactura}")
