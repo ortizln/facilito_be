@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.facilito.api.excepciones.ResourceNotFound;
-import com.facilito.api.interfaces.FacturaI;
 import com.facilito.api.models.Abonados;
 import com.facilito.api.models.Clientes;
 import com.facilito.api.models.Facturas;
@@ -37,31 +36,37 @@ public class FacturasApi {
 	private AbonadosR abonadosR;
 
 	@GetMapping("/sincobro")
-	public void getByIdAbonado(@RequestParam("opt") Long opt, @RequestParam("cuenta") Long cuenta) {
-		List<Facturas> facturas;
-		List<FacturaI> facturaI;
-		if (opt == 1) {
-			this.findFacturas(cuenta);
-		} else if (opt == 2) {
-			//List<Clientes> cliente = clientesR.findByCedula(String.valueOf(cuenta));
-			List<Abonados> abonado = abonadosR.findByCedula(String.valueOf(cuenta));
-			for (Abonados cient : abonado) {
-				if (abonado.isEmpty()) {
-					System.out.println("Clientes is empty");
-				} else {
-					System.out.println(cient.getIdabonado());
-					//facturas = facturasR.findByIdCliente(cient.getIdcliente());
-				}
-			}
-		} else {
+	public ResponseEntity<List<Facturas>> getSinCobro(@RequestParam("opt") Long opt,
+			@RequestParam("dato") Long dato) {
 
+		System.out.println(dato);
+		if (opt == 1) {
+			System.out.println(opt);
+			// this.getByCliente(idcliente);
+			
+			Clientes cliente = clientesR.findByCedula(String.valueOf(dato));
+			
+			System.out.println(cliente.getCedula());
+			List<Facturas> facturas = facturasR.findByIdCliente(cliente.getIdcliente());
+			return ResponseEntity.ok(facturas);
+		} else if (opt == 2) {
+			// List<Clientes> cliente = lientesR.findByCedula(String.valueOf(cuenta));
+			// List<Abonados> abonado = abonadosR.findById(String.valueOf(idcliente));
+			Abonados abonado = abonadosR.findByCuenta(dato);
+			System.out.println(abonado.getIdabonado());
+			List<Facturas> facturas = facturasR.findByIdCliente(abonado.getIdabonado());
+			return ResponseEntity.ok(facturas);
+
+		} else {
+			return ResponseEntity.noContent().build();
 		}
 	}
-	@GetMapping("/sincobro/cuenta")
-	public ResponseEntity<List<FacturaI>> getByCliente(@RequestParam("cuenta") Long cuenta) {
-		List<FacturaI> facturas = facturasR.findBy(cuenta);
-		return ResponseEntity.ok(facturas);
-	}
+
+	/*
+	 * public ResponseEntity<List<Facturas>> getByCliente(Long cuenta) {
+	 * System.out.println(cuenta); return ResponseEntity.ok(facturas); }
+	 */
+
 	public ResponseEntity<List<Facturas>> findFacturas(Long cuenta) {
 		List<Facturas> facturas = facturasR.findByIdAbonado(cuenta);
 		if (facturas.isEmpty()) {
