@@ -1,5 +1,7 @@
 package com.facilito.api.apis;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -20,7 +22,7 @@ public class ClientesApi {
 	private ClientesR clientesR; 
 	@GetMapping("/identificacion")
 	@ResponseStatus(HttpStatus.OK)
-	public Clientes findByCedula(@RequestParam("identificacion") String identificacion){
+	public List<Clientes> findByCedula(@RequestParam("identificacion") String identificacion){
 		return clientesR.findByCedula(identificacion);
 	}
 	

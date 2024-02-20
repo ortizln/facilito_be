@@ -1,5 +1,6 @@
 package com.facilito.api.apis;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,18 +14,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.facilito.api.excepciones.ResourceNotFound;
-<<<<<<< HEAD
 import com.facilito.api.models.Abonados;
 import com.facilito.api.models.Clientes;
-=======
-import com.facilito.api.interfaces.FacturaI;
->>>>>>> d64ff5654af3ad145e8ee97f50a5d1cae3829b6b
 import com.facilito.api.models.Facturas;
-import com.facilito.api.models.Modulos;
 import com.facilito.api.repositories.AbonadosR;
 import com.facilito.api.repositories.ClientesR;
 import com.facilito.api.repositories.FacturasR;
-import com.facilito.api.repositories.RubroxfacR;
 
 @RestController
 @RequestMapping("/facturas")
@@ -33,86 +28,45 @@ public class FacturasApi {
 	@Autowired
 	private FacturasR facturasR;
 	@Autowired
-	private RubroxfacR rubroxfacR;
-	@Autowired
 	private ClientesR clientesR;
 	@Autowired
 	private AbonadosR abonadosR;
 
 	@GetMapping("/sincobro")
-<<<<<<< HEAD
 	public ResponseEntity<List<Facturas>> getSinCobro(@RequestParam("opt") Long opt,
-			@RequestParam("dato") Long dato) {
-
-		System.out.println(dato);
+			@RequestParam("dato") String dato) {
 		if (opt == 1) {
-			System.out.println(opt);
-			// this.getByCliente(idcliente);
-			
-			Clientes cliente = clientesR.findByCedula(String.valueOf(dato));
-			
-			System.out.println(cliente.getCedula());
-			List<Facturas> facturas = facturasR.findByIdCliente(cliente.getIdcliente());
-			return ResponseEntity.ok(facturas);
+			List<Clientes> clientes = clientesR.findByCedula(dato);
+			if (!clientes.isEmpty()) {
+				List<Facturas> facturas = new ArrayList<>();
+				clientes.forEach((Clientes c) -> {
+					List<Facturas> factura = facturasR.findByIdCliente(c.getIdcliente());
+					if(!factura.isEmpty()){
+					facturas.addAll(factura);
+					}
+					
+				});
+				return ResponseEntity.ok(facturas);
+			} else {
+				return ResponseEntity.noContent().build();
+			}
 		} else if (opt == 2) {
-			// List<Clientes> cliente = lientesR.findByCedula(String.valueOf(cuenta));
-			// List<Abonados> abonado = abonadosR.findById(String.valueOf(idcliente));
-			Abonados abonado = abonadosR.findByCuenta(dato);
-			System.out.println(abonado.getIdabonado());
-			List<Facturas> facturas = facturasR.findByIdCliente(abonado.getIdabonado());
+			Abonados abonado = abonadosR.findByCuenta(Long.valueOf(dato));
+			List<Facturas> facturas = facturasR.findByIdCliente(abonado.getIdcliente_clientes().getIdcliente());
 			return ResponseEntity.ok(facturas);
-
 		} else {
 			return ResponseEntity.noContent().build();
-=======
-	public void getByIdAbonado(@RequestParam("opt") Long opt, @RequestParam("cuenta") Long cuenta) {
-		List<Facturas> facturas;
-		List<FacturaI> facturaI;
-		if (opt == 1) {
-			this.findFacturas(cuenta);
-		} else if (opt == 2) {
-			//List<Clientes> cliente = clientesR.findByCedula(String.valueOf(cuenta));
-			//List<Abonados> abonado = abonadosR.findByCedula(String.valueOf(cuenta));
-			/*for (Abonados cient : abonado) {
-				if (abonado.isEmpty()) {
-					System.out.println("Clientes is empty");
-				} else {
-					System.out.println(cient.getIdabonado());
-					//facturas = facturasR.findByIdCliente(cient.getIdcliente());
-				}
-			}*/
-		} else {
-			this.errorMessage();
->>>>>>> d64ff5654af3ad145e8ee97f50a5d1cae3829b6b
 		}
 	}
 
-	/*
-	 * public ResponseEntity<List<Facturas>> getByCliente(Long cuenta) {
-	 * System.out.println(cuenta); return ResponseEntity.ok(facturas); }
-	 */
 
-	public ResponseEntity<List<Facturas>> findFacturas(Long cuenta) {
-		List<Facturas> facturas = facturasR.findByIdAbonado(cuenta);
-		if (facturas.isEmpty()) {
-			return ResponseEntity.notFound().build();
-		} else {
-			facturas.forEach((item) -> {
-				Modulos modulo = item.getIdmodulo();
-				if (modulo.getIdmodulo() == 3) {
-					System.out.println(item.getTotaltarifa());
-				}
-			});
-		}
-		return ResponseEntity.ok(facturas);
-	}
-	
-	public ResponseEntity<Facturas> errorMessage(){
-		return ResponseEntity.notFound().build(); 
+	public ResponseEntity<Facturas> errorMessage() {
+		return ResponseEntity.notFound().build();
 	}
 
 	@PutMapping("/{idfactura}")
 	public ResponseEntity<Facturas> updateFacturas(@PathVariable Long idfactura, Facturas facturas) {
+		@SuppressWarnings("null")
 		Facturas factura = facturasR.findById(idfactura)
 				.orElseThrow(() -> new ResourceNotFound("Factura no encontrada" + idfactura));
 		factura.setIdmodulo(facturas.getIdmodulo());

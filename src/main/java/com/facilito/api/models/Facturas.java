@@ -385,7 +385,7 @@ public class Facturas {
 		this.idabonado = idabonado;
 	}
 	/*
-	 * public void setRubros(Rubros rubros) { // TODO Auto-generated method stub
+	 * public void setRubros(Rubros rubros) { 
 	 * throw new UnsupportedOperationException("Unimplemented method 'setRubros'");
 	 * } public List<Rubros> getRubros() { return rubros; } public void
 	 * setRubros(List<Rubros> rubros) { this.rubros = rubros; }
