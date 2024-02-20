@@ -1,7 +1,9 @@
 package com.facilito.api.apis;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +21,11 @@ import com.facilito.api.interfaces.FacturaI;
 import com.facilito.api.models.Abonados;
 import com.facilito.api.models.Clientes;
 import com.facilito.api.models.Facturas;
+import com.facilito.api.models.Intereses;
 import com.facilito.api.repositories.AbonadosR;
 import com.facilito.api.repositories.ClientesR;
 import com.facilito.api.repositories.FacturasR;
+import com.facilito.api.repositories.InteresesR;
 
 @RestController
 @RequestMapping("/facturas")
@@ -33,6 +37,10 @@ public class FacturasApi {
 	private ClientesR clientesR;
 	@Autowired
 	private AbonadosR abonadosR;
+	@Autowired
+	private InteresesR interesesR;
+	
+	private List<Facturas> facturas;
 
 	@GetMapping("/sincobro")
 	public ResponseEntity<List<Facturas>> getSinCobro(@RequestParam("opt") Long opt,
@@ -42,18 +50,10 @@ public class FacturasApi {
 			if (!clientes.isEmpty()) {
 				List<Facturas> facturas = new ArrayList<>();
 				clientes.forEach((Clientes c) -> {
-					List<Facturas> factura = facturasR.findByIdCliente(c.getIdcliente());
-					if (!factura.isEmpty()) {
-						facturas.addAll(factura);
+					this.getFacturas(c.getIdcliente());
+					if (!this.facturas.isEmpty()) {
+						facturas.addAll(this.facturas);
 					}
-
-				});
-
-				facturas.forEach((Facturas f) -> {
-					if (f.getIdmodulo().getIdmodulo() == 3) {
-						f.setTotaltarifa(f.getTotaltarifa().add(new BigDecimal(1)));
-					}
-
 				});
 				return ResponseEntity.ok(facturas);
 			} else {
@@ -61,14 +61,12 @@ public class FacturasApi {
 			}
 		} else if (opt == 2) {
 			Abonados abonado = abonadosR.findByCuenta(Long.valueOf(dato));
-			List<Facturas> facturas = facturasR.findByIdCliente(abonado.getIdcliente_clientes().getIdcliente());
-			facturas.forEach((Facturas f) -> {
-				if (f.getIdmodulo().getIdmodulo() == 3) {
-					f.setTotaltarifa(f.getTotaltarifa().add(new BigDecimal(1)));
-				}
-
-			});
-			return ResponseEntity.ok(facturas);
+			this.getFacturas(abonado.getIdcliente_clientes().getIdcliente());
+			return ResponseEntity.ok(this.facturas);
+		} else if (opt == 3) {
+			Abonados abonado = abonadosR.findByCuenta(Long.valueOf(dato));
+			this.getFacturas(abonado.getIdcliente_clientes().getIdcliente());
+			return ResponseEntity.ok(this.facturas);
 		} else {
 			return ResponseEntity.noContent().build();
 		}
@@ -100,14 +98,37 @@ public class FacturasApi {
 		} else if (opt == 2) {
 			Abonados abonado = abonadosR.findByCuenta(Long.valueOf(dato));
 			List<FacturaI> facturas = facturasR.findByIdCliente2(abonado.getIdcliente_clientes().getIdcliente());
-			facturas.forEach((FacturaI f) -> {
-				if (f.getIdmodulo() == 3) {
-					f.getTotaltarifa().add(new BigDecimal(1));
-				}
-			});
+			/*
+			 * facturas.forEach((FacturaI f) -> { if (f.getIdmodulo() == 3) {
+			 * f.getTotaltarifa().add(new BigDecimal(1)); } });
+			 */
 			return ResponseEntity.ok(facturas);
 		} else {
 			return ResponseEntity.noContent().build();
+		}
+	}
+
+	@SuppressWarnings("deprecation")
+	public ResponseEntity<List<Facturas>> getFacturas(Long idcliente) {
+		this.facturas = facturasR.findByIdCliente(idcliente);
+		if (this.facturas.isEmpty()) {
+			return ResponseEntity.noContent().build();
+		} else {
+			this.facturas.forEach((Facturas f) -> {
+				if (f.getIdmodulo().getIdmodulo() == 3) {
+					f.setTotaltarifa(f.getTotaltarifa().add(new BigDecimal(1)));
+				}
+				Date date = new Date();
+				SimpleDateFormat getYearFormat = new SimpleDateFormat("yyyy");
+				SimpleDateFormat getMonthFormat = new SimpleDateFormat("M");
+				String anio = getYearFormat.format(f.getFeccrea());
+				String month = getMonthFormat.format(f.getFeccrea());
+				//System.out.println(anio);
+				//System.out.println(month);
+				Intereses interes = interesesR.findByAnioMes(Long.valueOf(anio), Long.valueOf(month)); 
+				System.out.println(interes.getPorcentaje());
+			});
+			return ResponseEntity.ok(this.facturas);
 		}
 	}
 
