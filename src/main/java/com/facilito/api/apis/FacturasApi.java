@@ -125,8 +125,8 @@ public class FacturasApi {
 				String month = getMonthFormat.format(f.getFeccrea());
 				//System.out.println(anio);
 				//System.out.println(month);
-				Intereses interes = interesesR.findByAnioMes(Long.valueOf(anio), Long.valueOf(month)); 
-				System.out.println(interes.getPorcentaje());
+				List<Intereses> interes = interesesR.findByAnioMes(Long.valueOf(anio), Long.valueOf(month)); 
+				System.out.println(((Intereses) interes).getPorcentaje());
 			});
 			return ResponseEntity.ok(this.facturas);
 		}
