@@ -29,7 +29,6 @@ public class Intereses {
 
 	public Intereses() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public Intereses(Long idinteres, Long anio, Long mes, Double porcentaje, Long usucrea, Date feccrea, Long usumodi,
