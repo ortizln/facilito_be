@@ -90,7 +90,7 @@ public class FacturasApi {
 
 				});
 				facturas.forEach((FacturaI f) -> {
-					if (f.getIdmodulo() == 3) {
+					if (f.getIdmodulo().getIdmodulo() == 3) {
 						f.getTotaltarifa().add(new BigDecimal(1));
 					}
 				});
@@ -102,21 +102,11 @@ public class FacturasApi {
 			Abonados abonado = abonadosR.findByCuenta(Long.valueOf(dato));
 			List<FacturaI> facturas = facturasR.findByIdCliente2(abonado.getIdcliente_clientes().getIdcliente());
 			facturas.forEach((FacturaI f) -> {
-				if (f.getIdmodulo() == 3) {
+				if (f.getIdmodulo().getIdmodulo() == 3) {
 					f.getTotaltarifa().add(new BigDecimal(1));
 				}
 			});
 			return ResponseEntity.ok(facturas);
-		} else {
-			return ResponseEntity.noContent().build();
-		}
-	}
-
-	@GetMapping("/sincobro/v3")
-	public ResponseEntity<List<Map<String, Object>>> getSinCobro3(@RequestParam("opt") Long opt,
-			@RequestParam("dato") String dato) {
-		if (opt == 1) {
-			return ResponseEntity.ok(facturasR.findByIdCliente3(Long.valueOf(dato)));
 		} else {
 			return ResponseEntity.noContent().build();
 		}
