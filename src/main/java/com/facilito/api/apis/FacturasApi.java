@@ -3,6 +3,7 @@ package com.facilito.api.apis;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -106,6 +107,16 @@ public class FacturasApi {
 				}
 			});
 			return ResponseEntity.ok(facturas);
+		} else {
+			return ResponseEntity.noContent().build();
+		}
+	}
+
+	@GetMapping("/sincobro/v3")
+	public ResponseEntity<List<Map<String, Object>>> getSinCobro3(@RequestParam("opt") Long opt,
+			@RequestParam("dato") String dato) {
+		if (opt == 1) {
+			return ResponseEntity.ok(facturasR.findByIdCliente3(Long.valueOf(dato)));
 		} else {
 			return ResponseEntity.noContent().build();
 		}
