@@ -3,7 +3,6 @@ package com.facilito.api.apis;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,13 +15,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.facilito.api.excepciones.ResourceNotFound;
-import com.facilito.api.interfaces.FacturaI;
 import com.facilito.api.models.Abonados;
 import com.facilito.api.models.Clientes;
 import com.facilito.api.models.Facturas;
 import com.facilito.api.repositories.AbonadosR;
 import com.facilito.api.repositories.ClientesR;
 import com.facilito.api.repositories.FacturasR;
+import com.facilito.api.repositories.RubroxfacR;
 
 @RestController
 @RequestMapping("/facturas")
@@ -34,7 +33,15 @@ public class FacturasApi {
 	private ClientesR clientesR;
 	@Autowired
 	private AbonadosR abonadosR;
+	@Autowired
+	private RubroxfacR rubroxfacR;
 
+	@GetMapping("/facturas")
+	public ResponseEntity<List<Object[]>> getSincobros(@RequestParam("idcliente") Long idcliente) {
+		System.out.println(idcliente);
+		return ResponseEntity.ok(rubroxfacR.findSincobro(idcliente));
+	}
+/* 
 	@GetMapping("/sincobro")
 	public ResponseEntity<List<Facturas>> getSinCobro(@RequestParam("opt") Long opt,
 			@RequestParam("dato") String dato) {
@@ -74,47 +81,9 @@ public class FacturasApi {
 			return ResponseEntity.noContent().build();
 		}
 	}
-
-	@GetMapping("/sincobro/v2")
-	public ResponseEntity<List<FacturaI>> getSinCobro2(@RequestParam("opt") Long opt,
-			@RequestParam("dato") String dato) {
-		if (opt == 1) {
-			List<Clientes> clientes = clientesR.findByCedula(dato);
-			if (!clientes.isEmpty()) {
-				List<FacturaI> facturas = new ArrayList<>();
-				clientes.forEach((Clientes c) -> {
-					List<FacturaI> factura = facturasR.findByIdCliente2(c.getIdcliente());
-					if (!factura.isEmpty()) {
-						facturas.addAll(factura);
-					}
-
-				});
-				facturas.forEach((FacturaI f) -> {
-					if (f.getIdmodulo().getIdmodulo() == 3) {
-						f.getTotaltarifa().add(new BigDecimal(1));
-					}
-				});
-				return ResponseEntity.ok(facturas);
-			} else {
-				return ResponseEntity.noContent().build();
-			}
-		} else if (opt == 2) {
-			Abonados abonado = abonadosR.findByCuenta(Long.valueOf(dato));
-			List<FacturaI> facturas = facturasR.findByIdCliente2(abonado.getIdcliente_clientes().getIdcliente());
-			facturas.forEach((FacturaI f) -> {
-				if (f.getIdmodulo().getIdmodulo() == 3) {
-					f.getTotaltarifa().add(new BigDecimal(1));
-				}
-			});
-			return ResponseEntity.ok(facturas);
-		} else {
-			return ResponseEntity.noContent().build();
-		}
-	}
-
+ */
 	@PutMapping("/{idfactura}")
 	public ResponseEntity<Facturas> updateFacturas(@PathVariable Long idfactura, Facturas facturas) {
-		@SuppressWarnings("null")
 		Facturas factura = facturasR.findById(idfactura)
 				.orElseThrow(() -> new ResourceNotFound("Factura no encontrada" + idfactura));
 		factura.setIdmodulo(facturas.getIdmodulo());

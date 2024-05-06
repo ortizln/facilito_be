@@ -8,13 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import com.facilito.api.models.Rubroxfac;
 
 public interface RubroxfacR extends JpaRepository<Rubroxfac, Long>{
-	@Query(value="SELECT * FROM rubroxfac WHERE idfactura_facturas = ?1 ORDER BY idrubro_rubros",nativeQuery = true)
-	public List<Rubroxfac> findByIdFactura(Long idfactura);
 	
-	@Query(value="SELECT * FROM rubroxfac WHERE idrubro_rubros = ?1 ORDER BY idrubro_rubros",nativeQuery = true)
-	public List<Rubroxfac> findByIdRubro(Long idrubro);
-	
-	@Query(value="SELECT * FROM rubroxfac WHERE idfactura_facturas = ?1 AND idrubro_rubros = ?2 ORDER BY idrubro_rubros",nativeQuery = true)
-	public Rubroxfac findByIdFacIdRub(Long idfactura, Long idrubro);
+	@Query(value = "SELECT f.idfactura,  sum(rf.cantidad * rf.valorunitario) total from rubroxfac rf join facturas f on rf.idfactura_facturas = f.idfactura where f.idcliente = ?1 and f.pagado = 0 and f.fechaeliminacion is null group by f.idfactura", nativeQuery = true)
+	public List<Object[]> findSincobro(Long idcliente);
 
 }
